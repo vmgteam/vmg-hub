@@ -51,6 +51,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .xbtn{font-size:12px;color:#aaa;background:none;border:none;padding:0 0 10px;cursor:pointer;font-family:inherit;font-weight:500;display:block}
 .copy-btn{width:100%;padding:14px;font-size:14px;font-weight:700;border-radius:12px;border:none;cursor:pointer;font-family:inherit;background:#27500a;color:#c8e6a0}
 .copy-btn.done{background:#085041;color:#9fdecb}
+.tv-cards{max-width:480px;margin:0 auto}
+.tv-section-h{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#1a1a18;padding:22px 16px 0;max-width:480px;margin:0 auto;width:100%}
+.tv-section-sub{font-size:12px;color:#aaa;padding:2px 16px 0;max-width:480px;margin:0 auto;width:100%}
+.tv-vidwrap{width:100%;max-width:230px;margin:12px auto 0;aspect-ratio:9/16;background:#000;border-radius:14px;overflow:hidden}
+.tv-vid{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.tv-dl{width:100%;padding:13px;font-size:13px;font-weight:700;border-radius:12px;border:1.5px solid #ddd;background:#fff;color:#444;cursor:pointer;font-family:inherit;margin-top:8px}
 .soon{padding:50px 20px;text-align:center;font-size:14px;color:#aaa;line-height:1.8}
 .empty{padding:50px 20px;text-align:center;font-size:14px;color:#bbb}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:500;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.2s;overflow:hidden}
@@ -226,10 +232,47 @@ const SQ_IMGS = [
   {id:"sq-gsc", nm:"Glass Shaker Closeup", src:"https://vmgteam.github.io/vmg-hub/Glass%20Shaker%20Closeup%20square.jpeg", ct:"pur", ref:"gsc"},
 ];
 
-const TV = [
-  {id:'tv1', nm:'Testimonial Video — Webinar CTA', ct:'web', cp:`I was skeptical. Then something actually changed. We're hosting a free live online event this [day] — come see the full picture. ${W}`},
-  {id:'tv2', nm:'Testimonial Video — Purchase CTA', ct:'pur', cp:`90 ingredients. Liposomal delivery — up to 6x absorption. Clinically studied. 30 day supply. Free account. See for yourself. ${PU}`},
+const R2 = 'https://pub-a1196e679b804aa58af30072cacd2378.r2.dev/';
+function vf(n){ return R2 + encodeURIComponent(n); }
+
+const webCTA = `I was skeptical. Then something actually changed. We're hosting a free live online event this [day] — come see the full picture. ${W}`;
+
+const bartCap = `Bart had an early flight for work. I got up at 4am to say bye and walked into the kitchen to see his newest, healthiest habit.\n\nHe doesn't even think about it anymore. It's just who he is now.\n\nCome Tuesday night and I'll show you why he doesn't miss a day. ${W}`;
+
+const clareLifeCap = `Same time. Same glass. Same quiet little ritual she doesn't skip.\n\nThis is Clare's daily non-negotiable. Not a trend she's trying. Not a phase. Just the one thing she does every morning to fill the gaps and actually fuel her body before the day asks everything of her.\n\nIt's a small moment. But small moments, repeated, are how everything changes.\n\nCome Tuesday night and I'll show you what's in the glass. ${W}`;
+
+const VID_GROUPS = [
+  {h:'Single Testimonials', sub:'Spoken testimonials — one person each. Default Webinar CTA caption.', items:[
+    {id:'s1',  nm:'Clare (1)',   file:'Clare Testimonial 1.mp4', cp:webCTA},
+    {id:'s2',  nm:'Clare (2)',   file:'Clare Testimonial 2.mp4', cp:webCTA},
+    {id:'s3',  nm:'Clare (3)',   file:'Clare Testimonial 3.mp4', cp:webCTA},
+    {id:'s4',  nm:'Clare (4)',   file:'Clare Testimonial 4.mp4', cp:webCTA},
+    {id:'s5',  nm:'Clare (5)',   file:'Clare Testimonial 5.mp4', cp:webCTA},
+    {id:'s6',  nm:'Clare (6)',   file:'Clare Testimonial 6.mp4', cp:webCTA},
+    {id:'s7',  nm:"C'Anna (1)",  file:'CAnna Testimonial 1.mp4', cp:webCTA},
+    {id:'s8',  nm:"C'Anna (2)",  file:'CAnna Testimonial 2.mp4', cp:webCTA},
+    {id:'s9',  nm:'Charlie',     file:'Charlie Testimonial 1.mp4', cp:webCTA},
+    {id:'s10', nm:'Dawn',        file:'Dawn Testimonial 1.mp4', cp:webCTA},
+    {id:'s11', nm:'Grey (1)',    file:'Grey Testimonial 1.mp4', cp:webCTA},
+    {id:'s12', nm:'Grey (2)',    file:'Grey Testimonial 2.mp4', cp:webCTA},
+    {id:'s13', nm:'Grey (3)',    file:'Grey Testimonial 3.mp4', cp:webCTA},
+    {id:'s14', nm:'Helen',       file:'Helen Testimonial 1.mp4', cp:webCTA},
+    {id:'s15', nm:'Kim Tyson',   file:'Kim Tyson Testimonial 1.mp4', cp:webCTA},
+    {id:'s16', nm:'Morgan',      file:'Morgan Testimonial 1.mp4', cp:webCTA},
+    {id:'s17', nm:'Ruth (1)',    file:'Ruth Testimonial 1.mp4', cp:webCTA},
+    {id:'s18', nm:'Ruth (2)',    file:'Ruth Testimonial 2.mp4', cp:webCTA},
+  ]},
+  {h:'Mashups', sub:'Multiple highlights from several people in one video.', items:[
+    {id:'m1', nm:'Mashup 1', file:'Mashup 1.mp4', cp:webCTA},
+    {id:'m2', nm:'Mashup 2', file:'Mashup 2.mp4', cp:webCTA},
+    {id:'m3', nm:'Mashup 3', file:'Mashup 3.mp4', cp:webCTA},
+  ]},
+  {h:'Caught-in-Life', sub:'Silent clips — the caption carries the story.', items:[
+    {id:'l1', nm:'Bart — 4am',  file:'Bart Morning Caption.mp4', cp:bartCap},
+    {id:'l2', nm:'Clare — Caught in Life', file:'Clare Caption.mp4', cp:clareLifeCap},
+  ]},
 ];
+const ALLVID = VID_GROUPS.reduce((a,g)=>a.concat(g.items),[]);
 
 const TABS = [{id:'tv',l:'Testimonial Videos'},{id:'vert',l:'Vertical Images',s:true},{id:'sq',l:'Square Images',s:true},{id:'web',l:'Webinar'},{id:'pur',l:'Purchase'}];
 const NOTES = {
@@ -266,11 +309,14 @@ function render(){
   document.querySelector('.search-wrap').style.display=aT==='tv'?'none':'block';
 
   if(aT==='tv'){
-    document.getElementById('count').textContent='2 caption templates';
-    document.getElementById('content').innerHTML=`<div class="tv-cards">${TV.map(tv=>{
-      const isE=!!tvExp[tv.id], isC=!!tvCop[tv.id];
-      return`<div class="tv-card"><div class="tv-ph"><div class="tv-ph-l">9:16 Vertical</div><div class="tv-ph-s">Filmed on your phone</div></div><div class="tv-body"><div class="tv-name">${tv.nm}</div><div class="tv-badges"><span class="badge ${tv.ct==='web'?'b-web':'b-pur'}">${tv.ct==='web'?'Webinar CTA':'Purchase CTA'}</span><span class="badge b-vid">Video</span></div><div class="tv-cap${isE?' open':''}">${tv.cp}</div><button class="xbtn" onclick="togTV('${tv.id}')">${isE?'Hide ▲':'See full caption ▼'}</button><button class="copy-btn${isC?' done':''}" onclick="copTV('${tv.id}')">${isC?'✓ Copied!':'Copy Caption'}</button></div></div>`;
-    }).join('')}</div>`;
+    document.getElementById('count').textContent=`${ALLVID.length} videos`;
+    document.getElementById('content').innerHTML=VID_GROUPS.map(g=>{
+      const cards=g.items.map(v=>{
+        const isE=!!tvExp[v.id], isC=!!tvCop[v.id];
+        return`<div class="tv-card"><div class="tv-vidwrap"><video class="tv-vid" controls playsinline preload="metadata" src="${vf(v.file)}#t=0.4"></video></div><div class="tv-body"><div class="tv-name">${v.nm}</div><div class="tv-badges"><span class="badge b-web">Webinar CTA</span><span class="badge b-vid">Video</span></div><div class="tv-cap${isE?' open':''}">${v.cp}</div><button class="xbtn" onclick="togTV('${v.id}')">${isE?'Hide ▲':'See full caption ▼'}</button><button class="copy-btn${isC?' done':''}" onclick="copTV('${v.id}')">${isC?'✓ Copied!':'Copy Caption'}</button><button class="tv-dl" onclick="dlVid('${v.file}',this)">⬇ Download Video</button></div></div>`;
+      }).join('');
+      return`<div class="tv-section-h">${g.h}</div><div class="tv-section-sub">${g.sub}</div><div class="tv-cards">${cards}</div>`;
+    }).join('');
     return;
   }
 
@@ -290,9 +336,26 @@ function sT(id){aT=id;aS='Images';document.getElementById('search').value='';ren
 function sS(s){aS=s;render()}
 function togTV(id){tvExp[id]=!tvExp[id];render()}
 function copTV(id){
-  const tv=TV.find(t=>t.id===id);if(!tv)return;
-  navigator.clipboard.writeText(tv.cp).catch(()=>{});
+  const tv=ALLVID.find(t=>t.id===id);if(!tv)return;
+  navigator.clipboard.writeText(tv.cp).catch(()=>{
+    const t=document.createElement('textarea');t.value=tv.cp;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);
+  });
   tvCop[id]=true;render();setTimeout(()=>{tvCop[id]=false;render()},2500);
+}
+function dlVid(file,btn){
+  const url=vf(file);
+  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;
+  if(isIOS){ window.open(url,'_blank'); return; }
+  const orig=btn?btn.textContent:'';
+  if(btn) btn.textContent='Downloading…';
+  fetch(url).then(r=>r.blob()).then(blob=>{
+    const u=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=u;a.download=file;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(u),3000);
+    if(btn) btn.textContent=orig;
+  }).catch(()=>{ window.open(url,'_blank'); if(btn) btn.textContent=orig; });
 }
 
 function openModal(id){
