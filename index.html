@@ -33,6 +33,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tile-vid{width:100%;height:100%;object-fit:cover;display:block;background:#000;pointer-events:none}
 .tile-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,0.55);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;padding-left:3px;pointer-events:none}
 .vmodal-vid{max-width:100%;max-height:58vh;background:#000;display:block}
+.vgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px 10px 24px;max-width:960px;margin:0 auto}
+@media(min-width:600px){.vgrid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:900px){.vgrid{grid-template-columns:repeat(4,1fr)}}
+.vcard{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.08);display:flex;flex-direction:column}
+.vcard-vidwrap{width:100%;aspect-ratio:9/16;background:#000}
+.vcard-vid{width:100%;height:100%;object-fit:cover;display:block;background:#000}
+.vcard-body{padding:10px}
+.vcard-name{font-size:13px;font-weight:700;color:#111;margin-bottom:6px}
+.vcard-cap{font-size:12px;line-height:1.6;color:#555;white-space:pre-wrap;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
+.vcard-cap.open{display:block}
+.vcard-xbtn{font-size:11px;color:#aaa;background:none;border:none;padding:0 0 8px;cursor:pointer;font-family:inherit;font-weight:500;display:block}
+.vcard-copy{width:100%;padding:10px;font-size:12px;font-weight:700;border-radius:10px;border:none;cursor:pointer;font-family:inherit;background:#27500a;color:#c8e6a0;margin-bottom:6px}
+.vcard-copy.done{background:#085041;color:#9fdecb}
+.vcard-dl{width:100%;padding:10px;font-size:12px;font-weight:700;border-radius:10px;border:1.5px solid #ddd;background:#fff;color:#444;cursor:pointer;font-family:inherit}
 .tile-label{position:absolute;bottom:0;left:0;right:0;padding:20px 8px 8px;background:linear-gradient(transparent,rgba(0,0,0,0.75));color:#fff;font-size:10px;font-weight:600;line-height:1.3}
 .tile-cta{position:absolute;top:7px;right:7px;font-size:9px;font-weight:700;padding:3px 7px;border-radius:99px}
 .cta-web{background:rgba(90,158,47,0.9);color:#fff}
@@ -298,7 +312,7 @@ const ALLVID = VID_GROUPS.reduce((a,g)=>a.concat(g.items),[]);
 
 const TABS = [{id:'tv',l:'Testimonial Videos'},{id:'vert',l:'Vertical Images',s:true},{id:'sq',l:'Square Images',s:true},{id:'web',l:'Webinar'},{id:'pur',l:'Purchase'}];
 const NOTES = {
-  tv:`<b>Vertical videos from phone.</b> Best for Facebook Reels, Instagram Reels & Stories, and TikTok. Can also be posted to Facebook and Instagram feed.<br><b>📘 Facebook:</b> Link goes in the <b>first comment</b> after posting — not in the caption. &nbsp;|&nbsp; <b>📸 Instagram & TikTok:</b> Link goes in your <b>Linktree bio</b> — caption says "link in bio."`,
+  tv:`<b>📘 Facebook:</b> Link goes in the <b>first comment</b> after posting — not in the caption. &nbsp;|&nbsp; <b>📸 Instagram & TikTok:</b> Link goes in your <b>Linktree bio</b> — caption says "link in bio."`,
   vert:`<b>Best for Facebook Reels, Instagram Reels & Stories, and TikTok.</b> Can also be posted to Facebook and Instagram feed.<br><b>📘 Facebook:</b> Link goes in the <b>first comment</b> after posting — not in the caption. &nbsp;|&nbsp; <b>📸 Instagram & TikTok:</b> Link goes in your <b>Linktree bio</b> — caption says "link in bio."`,
   sq:`<b>Best for Facebook feed and Instagram feed.</b><br><b>📘 Facebook:</b> Link goes in the <b>first comment</b> after posting — not in the caption. &nbsp;|&nbsp; <b>📸 Instagram & TikTok:</b> Link goes in your <b>Linktree bio</b> — caption says "link in bio."`,
   web:`<b>Webinar CTA posts — all formats.</b> Use the Vertical tab for Facebook Reels, Instagram Reels & Stories, and TikTok. Use the Square tab for Facebook feed and Instagram feed.<br><b>📘 Facebook:</b> Link goes in the <b>first comment</b> after posting — not in the caption. &nbsp;|&nbsp; <b>📸 Instagram & TikTok:</b> Link goes in your <b>Linktree bio</b> — caption says "link in bio."`,
@@ -333,8 +347,11 @@ function render(){
   if(aT==='tv'){
     document.getElementById('count').textContent=`${ALLVID.length} videos`;
     document.getElementById('content').innerHTML=VID_GROUPS.map(g=>{
-      const tiles=g.items.map(v=>`<div class="tile vert-tile" onclick="openVid('${v.id}')"><video class="tile-vid" muted playsinline preload="metadata" src="${vf(v.file)}#t=0.4"></video><div class="tile-play">▶</div><div class="tile-label">${v.nm}</div><span class="tile-cta cta-web">Webinar</span></div>`).join('');
-      return`<div class="tv-section-h">${g.h}</div><div class="tv-section-sub">${g.sub}</div><div class="grid">${tiles}</div>`;
+      const cards=g.items.map(v=>{
+        const isE=!!tvExp[v.id], isC=!!tvCop[v.id];
+        return`<div class="vcard"><div class="vcard-vidwrap"><video class="vcard-vid" controls playsinline preload="metadata" src="${vf(v.file)}#t=0.4"></video></div><div class="vcard-body"><div class="vcard-name">${v.nm}</div><div class="vcard-cap${isE?' open':''}">${v.cp}</div><button class="vcard-xbtn" onclick="togTV('${v.id}')">${isE?'Hide ▲':'See full caption ▼'}</button><button class="vcard-copy${isC?' done':''}" onclick="copTV('${v.id}')">${isC?'✓ Copied!':'Copy Caption'}</button><button class="vcard-dl" onclick="dlVid('${v.file}',this)">⬇ Download</button></div></div>`;
+      }).join('');
+      return`<div class="tv-section-h">${g.h}</div><div class="vgrid">${cards}</div>`;
     }).join('');
     return;
   }
@@ -393,12 +410,16 @@ function openVid(id){
   document.getElementById('vmodal-dl').textContent='⬇ Download Video';
   document.getElementById('vmodal').classList.add('show');
   document.body.style.overflow='hidden';
+  history.pushState({hubModal:1},'');
 }
-function closeVid(){
+function hideVid(){
   const vid=document.getElementById('vmodal-vid');
   vid.pause(); vid.removeAttribute('src'); vid.load();
   document.getElementById('vmodal').classList.remove('show');
   document.body.style.overflow='';
+}
+function closeVid(){
+  if(history.state&&history.state.hubModal){ history.back(); } else { hideVid(); }
 }
 document.getElementById('vmodal').addEventListener('click',function(e){ if(e.target===this) closeVid(); });
 function vToggleCap(){
@@ -434,12 +455,21 @@ function openModal(id){
   document.getElementById('modal-save').textContent=isIOS?'Open Image to Save':'⬇ Save Image';
   document.getElementById('modal').classList.add('show');
   document.body.style.overflow='hidden';
+  history.pushState({hubModal:1},'');
 }
 
-function closeModal(){
+function hideImg(){
   document.getElementById('modal').classList.remove('show');
   document.body.style.overflow='';
 }
+function closeModal(){
+  if(history.state&&history.state.hubModal){ history.back(); } else { hideImg(); }
+}
+
+window.addEventListener('popstate',function(){
+  if(document.getElementById('vmodal').classList.contains('show')) hideVid();
+  if(document.getElementById('modal').classList.contains('show')) hideImg();
+});
 
 document.getElementById('modal').addEventListener('click', function(e){
   if(e.target===this) closeModal();
