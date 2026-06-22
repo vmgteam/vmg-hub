@@ -30,6 +30,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
 .tile{position:relative;overflow:hidden;cursor:pointer;background:#e0e0dc;border-radius:8px;max-height:420px}.tile.sq-tile{aspect-ratio:1/1}.tile.vert-tile{aspect-ratio:9/16}
 .tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile-vid{width:100%;height:100%;object-fit:cover;display:block;background:#000;pointer-events:none}
+.tile-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,0.55);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;padding-left:3px;pointer-events:none}
+.vmodal-vid{max-width:100%;max-height:58vh;background:#000;display:block}
 .tile-label{position:absolute;bottom:0;left:0;right:0;padding:20px 8px 8px;background:linear-gradient(transparent,rgba(0,0,0,0.75));color:#fff;font-size:10px;font-weight:600;line-height:1.3}
 .tile-cta{position:absolute;top:7px;right:7px;font-size:9px;font-weight:700;padding:3px 7px;border-radius:99px}
 .cta-web{background:rgba(90,158,47,0.9);color:#fff}
@@ -104,6 +107,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="modal-hint">Facebook: link in first comment · Instagram & TikTok: link in bio</div>
       <div class="modal-cap" id="modal-cap"></div>
       <button class="modal-xbtn" id="modal-xbtn" onclick="toggleCap()">See full caption ▼</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="vmodal">
+  <div class="modal-img-wrap">
+    <video id="vmodal-vid" class="vmodal-vid" controls playsinline preload="metadata"></video>
+    <button class="modal-close" onclick="closeVid()">✕</button>
+  </div>
+  <div class="modal-body">
+    <div class="modal-name" id="vmodal-name"></div>
+    <div class="modal-badges" id="vmodal-badges"></div>
+    <button class="modal-copy" id="vmodal-copy" onclick="vCopy()">Copy Caption</button>
+    <button class="modal-save" id="vmodal-dl" onclick="vDl()">⬇ Download Video</button>
+    <div style="margin-top:16px;border-top:1px solid #eee;padding-top:14px">
+      <div class="modal-cap-label">Caption — copy and paste into your post</div>
+      <div class="modal-hint">Facebook: link in first comment · Instagram & TikTok: link in bio</div>
+      <div class="modal-cap" id="vmodal-cap"></div>
+      <button class="modal-xbtn" id="vmodal-xbtn" onclick="vToggleCap()">See full caption ▼</button>
     </div>
   </div>
 </div>
@@ -311,11 +333,8 @@ function render(){
   if(aT==='tv'){
     document.getElementById('count').textContent=`${ALLVID.length} videos`;
     document.getElementById('content').innerHTML=VID_GROUPS.map(g=>{
-      const cards=g.items.map(v=>{
-        const isE=!!tvExp[v.id], isC=!!tvCop[v.id];
-        return`<div class="tv-card"><div class="tv-vidwrap"><video class="tv-vid" controls playsinline preload="metadata" src="${vf(v.file)}#t=0.4"></video></div><div class="tv-body"><div class="tv-name">${v.nm}</div><div class="tv-badges"><span class="badge b-web">Webinar CTA</span><span class="badge b-vid">Video</span></div><div class="tv-cap${isE?' open':''}">${v.cp}</div><button class="xbtn" onclick="togTV('${v.id}')">${isE?'Hide ▲':'See full caption ▼'}</button><button class="copy-btn${isC?' done':''}" onclick="copTV('${v.id}')">${isC?'✓ Copied!':'Copy Caption'}</button><button class="tv-dl" onclick="dlVid('${v.file}',this)">⬇ Download Video</button></div></div>`;
-      }).join('');
-      return`<div class="tv-section-h">${g.h}</div><div class="tv-section-sub">${g.sub}</div><div class="tv-cards">${cards}</div>`;
+      const tiles=g.items.map(v=>`<div class="tile vert-tile" onclick="openVid('${v.id}')"><video class="tile-vid" muted playsinline preload="metadata" src="${vf(v.file)}#t=0.4"></video><div class="tile-play">▶</div><div class="tile-label">${v.nm}</div><span class="tile-cta cta-web">Webinar</span></div>`).join('');
+      return`<div class="tv-section-h">${g.h}</div><div class="tv-section-sub">${g.sub}</div><div class="grid">${tiles}</div>`;
     }).join('');
     return;
   }
@@ -357,6 +376,46 @@ function dlVid(file,btn){
     if(btn) btn.textContent=orig;
   }).catch(()=>{ window.open(url,'_blank'); if(btn) btn.textContent=orig; });
 }
+
+let curVid=null, vCapOpen=false;
+function openVid(id){
+  curVid=ALLVID.find(v=>v.id===id); if(!curVid) return;
+  vCapOpen=false;
+  const vid=document.getElementById('vmodal-vid');
+  vid.src=vf(curVid.file);
+  document.getElementById('vmodal-name').textContent=curVid.nm;
+  document.getElementById('vmodal-badges').innerHTML='<span class="badge b-web">Webinar CTA</span><span class="badge b-vid">Video</span>';
+  document.getElementById('vmodal-cap').textContent=curVid.cp;
+  document.getElementById('vmodal-cap').className='modal-cap';
+  document.getElementById('vmodal-xbtn').textContent='See full caption ▼';
+  document.getElementById('vmodal-copy').textContent='Copy Caption';
+  document.getElementById('vmodal-copy').className='modal-copy';
+  document.getElementById('vmodal-dl').textContent='⬇ Download Video';
+  document.getElementById('vmodal').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeVid(){
+  const vid=document.getElementById('vmodal-vid');
+  vid.pause(); vid.removeAttribute('src'); vid.load();
+  document.getElementById('vmodal').classList.remove('show');
+  document.body.style.overflow='';
+}
+document.getElementById('vmodal').addEventListener('click',function(e){ if(e.target===this) closeVid(); });
+function vToggleCap(){
+  vCapOpen=!vCapOpen;
+  document.getElementById('vmodal-cap').className='modal-cap'+(vCapOpen?' open':'');
+  document.getElementById('vmodal-xbtn').textContent=vCapOpen?'Hide caption ▲':'See full caption ▼';
+}
+function vCopy(){
+  if(!curVid)return;
+  navigator.clipboard.writeText(curVid.cp).catch(()=>{
+    const t=document.createElement('textarea');t.value=curVid.cp;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);
+  });
+  const b=document.getElementById('vmodal-copy');
+  b.textContent='✓ Copied!';b.className='modal-copy done';
+  setTimeout(()=>{b.textContent='Copy Caption';b.className='modal-copy';},2500);
+}
+function vDl(){ if(!curVid)return; dlVid(curVid.file, document.getElementById('vmodal-dl')); }
 
 function openModal(id){
   curImg=IMGS.find(i=>i.id===id)||SQ_IMGS.find(i=>i.id===id);
