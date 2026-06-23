@@ -272,7 +272,10 @@ const R2 = 'https://pub-a1196e679b804aa58af30072cacd2378.r2.dev/';
 const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;
 function vf(n){ return R2 + encodeURIComponent(n); }
 
-const webCTA = `I was skeptical. Then something actually changed. We're hosting a free live online event this [day] — come see the full picture. ${W}`;
+const v1 = `I was skeptical. Then something actually changed. We're hosting a free live online event this [day]. Come see the full picture. ${W}`;
+const v2 = `I didn't know what to expect. But it didn't take long before something shifted, and I can't un-feel it. We're doing a free live online event this [day] where you'll see exactly what's behind it. ${W}`;
+const v3 = `No hype. No big before-and-after. Just my body FINALLY starting to feel like it's working with me instead of against me. If you want to find out why, come to our free live online event this [day]. ${W}`;
+const v4 = `I almost scrolled past this once too. Then I tried it, and now I'm the one telling people. Come see the whole picture for yourself at our free live online event this [day]. ${W}`;
 
 const bartCap = `Bart had an early flight for work. I got up at 4am to say bye and walked into the kitchen to see his newest, healthiest habit.\n\nHe doesn't even think about it anymore. It's just what he does now.\n\nCome Tuesday night and I'll show you why he doesn't miss a day. ${W}`;
 
@@ -280,29 +283,29 @@ const clareLifeCap = `Same time. Same glass. Same quiet little ritual she doesn'
 
 const VID_GROUPS = [
   {h:'Team Highlight Reels', sub:'Multiple highlights from several people in one video.', items:[
-    {id:'m1', nm:'Mashup 1', file:'Mashup 1.mp4', cp:webCTA},
-    {id:'m2', nm:'Mashup 2', file:'Mashup 2.mp4', cp:webCTA},
-    {id:'m3', nm:'Mashup 3', file:'Mashup 3.mp4', cp:webCTA},
+    {id:'m1', nm:'Mashup 1', file:'Mashup 1.mp4', cp:v1},
+    {id:'m2', nm:'Mashup 2', file:'Mashup 2.mp4', cp:v2},
+    {id:'m3', nm:'Mashup 3', file:'Mashup 3.mp4', cp:v3},
   ]},
   {h:'Single Testimonials', sub:'Spoken testimonials — one person each. Default Webinar CTA caption.', items:[
-    {id:'s1',  nm:'Clare (1)',   file:'Clare Testimonial 1.mp4', cp:webCTA},
-    {id:'s2',  nm:'Clare (2)',   file:'Clare Testimonial 2.mp4', cp:webCTA},
-    {id:'s3',  nm:'Clare (3)',   file:'Clare Testimonial 3.mp4', cp:webCTA},
-    {id:'s4',  nm:'Clare (4)',   file:'Clare Testimonial 4.mp4', cp:webCTA},
-    {id:'s5',  nm:'Clare (5)',   file:'Clare Testimonial 5.mp4', cp:webCTA},
-    {id:'s6',  nm:'Clare (6)',   file:'Clare Testimonial 6.mp4', cp:webCTA},
-    {id:'s7',  nm:"C'Anna (1)",  file:'CAnna Testimonial 1.mp4', cp:webCTA},
-    {id:'s8',  nm:"C'Anna (2)",  file:'CAnna Testimonial 2.mp4', cp:webCTA},
-    {id:'s9',  nm:'Charlie',     file:'Charlie Testimonial 1.mp4', cp:webCTA},
-    {id:'s10', nm:'Dawn',        file:'Dawn Testimonial 1.mp4', cp:webCTA},
-    {id:'s11', nm:'Grey (1)',    file:'Grey Testimonial 1.mp4', cp:webCTA},
-    {id:'s12', nm:'Grey (2)',    file:'Grey Testimonial 2.mp4', cp:webCTA},
-    {id:'s13', nm:'Grey (3)',    file:'Grey Testimonial 3.mp4', cp:webCTA},
-    {id:'s14', nm:'Helen',       file:'Helen Testimonial 1.mp4', cp:webCTA},
-    {id:'s15', nm:'Kim Tyson',   file:'Kim Tyson Testimonial 1.mp4', cp:webCTA},
-    {id:'s16', nm:'Morgan',      file:'Morgan Testimonial 1.mp4', cp:webCTA},
-    {id:'s17', nm:'Ruth (1)',    file:'Ruth Testimonial 1.mp4', cp:webCTA},
-    {id:'s18', nm:'Ruth (2)',    file:'Ruth Testimonial 2.mp4', cp:webCTA},
+    {id:'s1',  nm:'Clare (1)',   file:'Clare Testimonial 1.mp4', cp:v1},
+    {id:'s2',  nm:'Clare (2)',   file:'Clare Testimonial 2.mp4', cp:v3},
+    {id:'s3',  nm:'Clare (3)',   file:'Clare Testimonial 3.mp4', cp:v2},
+    {id:'s4',  nm:'Clare (4)',   file:'Clare Testimonial 4.mp4', cp:v3},
+    {id:'s5',  nm:'Clare (5)',   file:'Clare Testimonial 5.mp4', cp:v2},
+    {id:'s6',  nm:'Clare (6)',   file:'Clare Testimonial 6.mp4', cp:v1},
+    {id:'s7',  nm:"C'Anna (1)",  file:'CAnna Testimonial 1.mp4', cp:v1},
+    {id:'s8',  nm:"C'Anna (2)",  file:'CAnna Testimonial 2.mp4', cp:v2},
+    {id:'s9',  nm:'Charlie',     file:'Charlie Testimonial 1.mp4', cp:v1},
+    {id:'s10', nm:'Dawn',        file:'Dawn Testimonial 1.mp4', cp:v3},
+    {id:'s11', nm:'Grey (1)',    file:'Grey Testimonial 1.mp4', cp:v1},
+    {id:'s12', nm:'Grey (2)',    file:'Grey Testimonial 2.mp4', cp:v3},
+    {id:'s13', nm:'Grey (3)',    file:'Grey Testimonial 3.mp4', cp:v2},
+    {id:'s14', nm:'Helen',       file:'Helen Testimonial 1.mp4', cp:v2},
+    {id:'s15', nm:'Kim Tyson',   file:'Kim Tyson Testimonial 1.mp4', cp:v1},
+    {id:'s16', nm:'Morgan',      file:'Morgan Testimonial 1.mp4', cp:v1},
+    {id:'s17', nm:'Ruth (1)',    file:'Ruth Testimonial 1.mp4', cp:v1},
+    {id:'s18', nm:'Ruth (2)',    file:'Ruth Testimonial 2.mp4', cp:v1},
   ]},
   {h:'Caught-in-Life', sub:'Silent clips — the caption carries the story.', items:[
     {id:'l1', nm:'Bart — 4am',  file:'Bart Morning Caption.mp4', cp:bartCap},
