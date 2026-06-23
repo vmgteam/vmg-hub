@@ -350,10 +350,11 @@ function render(){
     document.getElementById('content').innerHTML=VID_GROUPS.map(g=>{
       const cards=g.items.map(v=>{
         const isE=!!tvExp[v.id], isC=!!tvCop[v.id];
-        return`<div class="vcard"><div class="vcard-vidwrap"><video class="vcard-vid" controls playsinline preload="metadata" src="${vf(v.file)}#t=0.4"></video></div><div class="vcard-body"><div class="vcard-name">${v.nm}</div><div class="vcard-cap${isE?' open':''}">${v.cp}</div><button class="vcard-xbtn" onclick="togTV('${v.id}')">${isE?'Hide ▲':'See full caption ▼'}</button><button class="vcard-copy${isC?' done':''}" onclick="copTV('${v.id}')">${isC?'✓ Copied!':'Copy Caption'}</button><button class="vcard-dl" onclick="dlVid('${v.file}',this)">${IS_IOS?'⬇ Open to Save':'⬇ Download'}</button>${IS_IOS?'<div class="vcard-hint">Tap to open, then press & hold the video → Save to Photos</div>':''}</div></div>`;
+        return`<div class="vcard"><div class="vcard-vidwrap"><video class="vcard-vid" controls playsinline preload="none" src="${vf(v.file)}#t=0.4"></video></div><div class="vcard-body"><div class="vcard-name">${v.nm}</div><div class="vcard-cap${isE?' open':''}">${v.cp}</div><button class="vcard-xbtn" onclick="togTV('${v.id}')">${isE?'Hide ▲':'See full caption ▼'}</button><button class="vcard-copy${isC?' done':''}" onclick="copTV('${v.id}')">${isC?'✓ Copied!':'Copy Caption'}</button><button class="vcard-dl" onclick="dlVid('${v.file}',this)">${IS_IOS?'⬇ Open to Save':'⬇ Download'}</button>${IS_IOS?'<div class="vcard-hint">Tap to open, then press & hold the video → Save to Photos</div>':''}</div></div>`;
       }).join('');
       return`<div class="tv-section-h">${g.h}</div><div class="vgrid">${cards}</div>`;
     }).join('');
+    lazyVideos();
     return;
   }
 
@@ -438,6 +439,22 @@ function vCopy(){
   setTimeout(()=>{b.textContent='Copy Caption';b.className='modal-copy';},2500);
 }
 function vDl(){ if(!curVid)return; dlVid(curVid.file, document.getElementById('vmodal-dl')); }
+
+function lazyVideos(){
+  const vids=document.querySelectorAll('.vcard-vid');
+  if(!('IntersectionObserver' in window)){ vids.forEach(v=>{ v.preload='metadata'; try{v.load();}catch(e){} }); return; }
+  const io=new IntersectionObserver(function(entries,obs){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        const v=e.target;
+        v.preload='metadata';
+        try{ v.load(); }catch(err){}
+        obs.unobserve(v);
+      }
+    });
+  },{rootMargin:'400px 0px'});
+  vids.forEach(function(v){ io.observe(v); });
+}
 
 function openModal(id){
   curImg=IMGS.find(i=>i.id===id)||SQ_IMGS.find(i=>i.id===id);
