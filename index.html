@@ -13,8 +13,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .tabs-wrap{background:#1a1a18;position:sticky;top:65px;z-index:199;border-bottom:1px solid #333}
 .tabs{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 12px}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex-shrink:0;padding:11px 14px 10px;font-size:13px;font-weight:600;border:none;border-bottom:3px solid transparent;background:transparent;color:#666;cursor:pointer;white-space:nowrap;font-family:inherit}
+.tab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 20px 9px;font-size:14px;font-weight:600;border:none;border-bottom:3px solid transparent;background:transparent;color:#666;cursor:pointer;white-space:nowrap;font-family:inherit}
+.tsub{font-size:10px;font-weight:600;color:#999;letter-spacing:.2px}
 .tab.on{color:#fff;border-bottom-color:#5a9e2f}
+.tab.on .tsub{color:#9ec98a}
 .stabs-wrap{background:#f2f2ef;padding:10px 14px;border-bottom:1px solid #e0e0dc}
 .stabs{display:flex;gap:8px}
 .stab{padding:6px 18px;font-size:12px;font-weight:700;border-radius:99px;border:1.5px solid #ccc;background:transparent;color:#777;cursor:pointer;font-family:inherit}
@@ -314,8 +316,8 @@ const VID_GROUPS = [
 ];
 const ALLVID = VID_GROUPS.reduce((a,g)=>a.concat(g.items),[]);
 
-.tab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 20px 9px;font-size:14px;font-weight:600;border:none;border-bottom:3px solid transparent;background:transparent;color:#666;cursor:pointer;white-space:nowrap;font-family:inherit}
-.tsub{font-size:10px;font-weight:600;color:#999;letter-spacing:.2px}
+const TABS = [{id:'tv',l:'Testimonial Videos<span class="tsub">FB Reels · IG Reels · TikTok</span>'},{id:'sq',l:'Square Images<span class="tsub">FB Feed · IG Feed</span>',s:true},{id:'vert',l:'Vertical Images<span class="tsub">TikTok · FB Stories · IG Stories</span>',s:true}];
+
 const NOTES = {
   tv:`<b>📘 Facebook:</b> <b>Registration link</b> goes in the <b>first comment</b> after posting — not in the caption. &nbsp;|&nbsp; <b>📸 Instagram & TikTok:</b> <b>Registration link</b> goes in your <b>Linktree bio</b> — caption says "link in bio."`,
   vert:`<b>Best for Facebook Reels, Instagram Reels & Stories, and TikTok.</b> Can also be posted to Facebook and Instagram feed.<br><b>📘 Facebook:</b> Link goes in the <b>first comment</b> after posting — not in the caption. &nbsp;|&nbsp; <b>📸 Instagram & TikTok:</b> Link goes in your <b>Linktree bio</b> — caption says "link in bio."`,
