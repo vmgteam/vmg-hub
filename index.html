@@ -314,7 +314,8 @@ const VID_GROUPS = [
 ];
 const ALLVID = VID_GROUPS.reduce((a,g)=>a.concat(g.items),[]);
 
-const TABS = [{id:'tv',l:'Testimonial Videos'},{id:'vert',l:'Vertical Images',s:true},{id:'sq',l:'Square Images',s:true},{id:'web',l:'Webinar'},{id:'pur',l:'Purchase'}];
+.tab{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 20px 9px;font-size:14px;font-weight:600;border:none;border-bottom:3px solid transparent;background:transparent;color:#666;cursor:pointer;white-space:nowrap;font-family:inherit}
+.tsub{font-size:10px;font-weight:600;color:#999;letter-spacing:.2px}
 const NOTES = {
   tv:`<b>📘 Facebook:</b> <b>Registration link</b> goes in the <b>first comment</b> after posting — not in the caption. &nbsp;|&nbsp; <b>📸 Instagram & TikTok:</b> <b>Registration link</b> goes in your <b>Linktree bio</b> — caption says "link in bio."`,
   vert:`<b>Best for Facebook Reels, Instagram Reels & Stories, and TikTok.</b> Can also be posted to Facebook and Instagram feed.<br><b>📘 Facebook:</b> Link goes in the <b>first comment</b> after posting — not in the caption. &nbsp;|&nbsp; <b>📸 Instagram & TikTok:</b> Link goes in your <b>Linktree bio</b> — caption says "link in bio."`,
